@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const nodoDatosTabla = document.querySelector(".datos-tabla");
 const url = "http://localhost:3001/facturas";
 let datosAPI;
 
@@ -6,6 +7,7 @@ const facturas = async () => {
   datosAPI = await fetch(url);
   const datosApiJson = await datosAPI.json();
   const datosParaTabla = prepararDatosTabla(datosApiJson);
+  rellenarTablaConDatosPreparados(datosParaTabla);
 };
 
 const prepararDatosTabla = (datosApi) => {
@@ -16,11 +18,25 @@ const prepararDatosTabla = (datosApi) => {
       fecha: luxon.DateTime.fromMillis(parseInt(objetoDatoFiltrado.fecha, 10)).toLocaleString(),
       concepto: objetoDatoFiltrado.concepto,
       base: objetoDatoFiltrado.base,
-      iva: `${(objetoDatoFiltrado.base * 21) / 100}€(${objetoDatoFiltrado.tipoIva}%)`,
+      iva: `${(objetoDatoFiltrado.base * 21) / 100}€ (${objetoDatoFiltrado.tipoIva}%)`,
       // Acabar de rellenar datos que faltan por orden en que aparecen en la tabla
 
     }));
   return datosApiInsertarTabla;
+};
+
+const rellenarTablaConDatosPreparados = (arrayDatosInsertarTablaPreparados) => {
+  const nodoMolde = document.createElement("tr");
+  arrayDatosInsertarTablaPreparados.forEach(objetoInserirTabla => {
+    const nodoFilaInserirTabla = nodoMolde.cloneNode();
+    // eslint-disable-next-line guard-for-in
+    for (const keyDatoInserirTd in objetoInserirTabla) {
+      const dataInserirTd = document.createElement("td");
+      dataInserirTd.textContent = objetoInserirTabla[keyDatoInserirTd];
+      nodoFilaInserirTabla.appendChild(dataInserirTd);
+    }
+    nodoDatosTabla.append(nodoFilaInserirTabla);
+  });
 };
 
 /*
