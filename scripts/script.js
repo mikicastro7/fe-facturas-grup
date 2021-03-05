@@ -19,7 +19,7 @@ const prepararDatosTabla = (datosApi) => {
       concepto: objetoDatoFiltrado.concepto,
       base: objetoDatoFiltrado.base,
       iva: `${(objetoDatoFiltrado.base * 21) / 100}€ (${objetoDatoFiltrado.tipoIva}%)`,
-      // Acabar de rellenar datos que faltan por orden en que aparecen en la tabla
+      total: `${(objetoDatoFiltrado.base) + (objetoDatoFiltrado.base * 21) / 100}€`,
 
     }));
   return datosApiInsertarTabla;
