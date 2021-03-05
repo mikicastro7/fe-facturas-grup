@@ -8,6 +8,7 @@ const facturas = async () => {
   const datosApiJson = await datosAPI.json();
   const datosParaTabla = prepararDatosTabla(datosApiJson);
   rellenarTablaConDatosPreparados(datosParaTabla);
+  rellenarDatosTotales(datosParaTabla);
 };
 
 const prepararDatosTabla = (datosApi) => {
@@ -39,19 +40,10 @@ const rellenarTablaConDatosPreparados = (arrayDatosInsertarTablaPreparados) => {
   });
 };
 
-/*
-const obtenerMolde = (datos) => {
-  const nodoMolde = document.createElement("tr");
-  const datosFiltrados = datos.filter(dato => dato.tipo === "ingreso");
-  datosFiltrados.forEach(objeto => {
-    anyadirDatoTabla(objeto.numero);
-  });
+const rellenarDatosTotalesBase = (arrayDatosPreparadosInsertarTabla) => {
+  const totalBase = document.querySelector(".total-base");
+  const resultadoBase = arrayDatosPreparadosInsertarTabla.reduce((acc, object) => acc + object.base, 0);
+  totalBase.textContent = `${resultadoBase}€`;
 };
-
-const anyadirDatoTabla = (dato) => {
-  const hijosNodoMolde = document.createElement("td");
-  hijosNodoMolde.textContent = dato;
-  console.log(hijosNodoMolde);
-}; */
 
 facturas();
